@@ -1,0 +1,2 @@
+# hangman
+exercise 6 
