@@ -223,18 +223,56 @@ class Player:
 # ComputerPlayer classes.
 
 class HumanPlayer(Player):
+    """code meant for the user, the human player operates from this class
+
+    Args:
+        Player (Player): Inherits from the player base class
+    """
     def turn(self, state):
+        """Prompts the user to make a guess, also displays 
+        the current game state and asks the player to guess either
+        a single word or a full word guess
+
+        Args:
+            state (GameState): Current state of the game
+        Returns:
+            str: The players guess 
+        """
         print(state)
         guess = input(f"{self.name}, guess a letter or type a word to solve the puzzle: ")
         return(guess)
             
 
 class ComputerPlayer(Player):
+    """A computer player that plays against the user. The computer filters through a vocabulary 
+    list and selects letters based on letter frequency
+
+    Args:
+        Player (_type_): _description_
+    """
     def __init__(self, name, vocab):
+        """Initializes computer player
+
+        Args:
+            name (str): The name of the player
+            vocab (list of str): List of words the computer can use to make guesses
+        """
         self.name = name
         self.vocab = vocab
         
     def turn(self, state):
+        """Determines and returns the computer's next guess. Filter vocab to words that matches 
+        the boards pattern, excluding already guessed words
+        After that it guesses the full word only if one possible match is left
+        Guesses the most frequent unguessed letter
+        resorts to a random unguessed letter if all else fails
+
+        Args:
+            state (GameState): current state of the game
+
+        Returns:
+            str: The computers guess, full letter word
+        """
         possible_words = [] 
         for word in self.vocab:
             if state.match(word) and word not in state.guessed_words:
